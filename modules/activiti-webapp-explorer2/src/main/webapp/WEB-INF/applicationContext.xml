@@ -65,13 +65,13 @@
   <!-- PRODUCTION PROFILE -->
     
   <beans profile="prod">
-  
+ 
     <bean id="dbProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
       <property name="location" value="classpath:db.properties" />
       <!-- Allow other PropertyPlaceholderConfigurer to run as well -->
       <property name="ignoreUnresolvablePlaceholders" value="true" />
     </bean>
-    
+     <!--
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
       <property name="driverClassName" value="${jdbc.driver}" />
       <property name="url" value="${jdbc.url}" />
@@ -79,7 +79,7 @@
       <property name="password" value="${jdbc.password}" />
       <property name="defaultAutoCommit" value="false" />
     </bean>
-        
+        -->
         <!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
             <property name="driverClassName" value="com.mysql.jdbc.Driver" />
             <property name="url" value="jdbc:mysql://localhost:3306/activiti?autoReconnect=true" />
@@ -87,7 +87,7 @@
             <property name="password" value="activiti" />
             <property name="defaultAutoCommit" value="false" />
         </bean> -->
-    
+    <jee:jndi-lookup id="dataSource" jndi-name="java:/comp/env/mysql" />
   </beans>
 	
 </beans>
