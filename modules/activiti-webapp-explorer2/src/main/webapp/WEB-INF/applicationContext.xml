@@ -19,7 +19,7 @@
   	<property name="dataSource" ref="dataSource" />
   	<property name="transactionManager" ref="transactionManager" />
   	<property name="databaseSchemaUpdate" value="true" />
-  	<property name="jobExecutorActivate" value="true" />
+  	<property name="jobExecutorActivate" value="false" />
     <property name="customFormTypes">
       <list>
         <ref bean="userFormType"/>
