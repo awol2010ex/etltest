@@ -141,7 +141,7 @@ public class ProcessDiagramCanvas {
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g.setPaint(Color.black);
 
-    Font font = new Font("Arial", Font.BOLD, FONT_SIZE);
+    Font font = new Font("宋体", Font.BOLD, FONT_SIZE);
     g.setFont(font);
     this.fontMetrics = g.getFontMetrics();
   }
