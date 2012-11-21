@@ -871,7 +871,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   protected void initExpressionManager() {
     if (expressionManager==null) {
-      expressionManager = new ExpressionManager();
+      expressionManager = new ExpressionManager(beans);
     }
   }
 
@@ -1474,6 +1474,12 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     return this;
   }
 
+  @Override
+  public ProcessEngineConfigurationImpl setMailServerUseSSL(boolean useSSL) {
+	    super.setMailServerUseSSL(useSSL);
+	    return this;
+	  }
+  
   @Override
   public ProcessEngineConfigurationImpl setMailServerUseTLS(boolean useTLS) {
     super.setMailServerUseTLS(useTLS);
