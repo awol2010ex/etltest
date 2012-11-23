@@ -91,6 +91,11 @@ public class TaskManager extends AbstractManager {
     return getDbSqlSession().selectList("selectTasksByExecutionId", executionId);
   }
   
+  public List<TaskEntity> findTasksByProcessInstanceId(String processInstanceId) {
+    return getDbSqlSession().selectList("selectTasksByProcessInstanceId", processInstanceId);
+  }
+  
+  @SuppressWarnings("unchecked")
   @Deprecated
   public List<Task> findTasksByQueryCriteria(TaskQueryImpl taskQuery, Page page) {
     taskQuery.setFirstResult(page.getFirstResult());

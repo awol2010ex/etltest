@@ -12,23 +12,38 @@
  */
 package org.activiti.engine.impl.cmd;
 
+import java.util.Date;
+
+import org.activiti.engine.impl.jobexecutor.TimerActivateProcessDefinitionHandler;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.persistence.entity.SuspensionState;
-import org.activiti.engine.impl.persistence.entity.SuspensionState.SuspensionStateUtil;
+import org.activiti.engine.runtime.ProcessInstance;
 
 /**
- * 
  * @author Daniel Meyer
+ * @author Joram Barrez
  */
 public class ActivateProcessDefinitionCmd extends AbstractSetProcessDefinitionStateCmd {
-
-  public ActivateProcessDefinitionCmd(String processDefinitionId, String processDefinitionKey) {
-    super(processDefinitionId, processDefinitionKey);
+  
+  public ActivateProcessDefinitionCmd(ProcessDefinitionEntity processDefinitionEntity, 
+          boolean includeProcessInstances, Date executionDate) {
+    super(processDefinitionEntity, includeProcessInstances, executionDate);
   }
 
-  protected void setState(ProcessDefinitionEntity processDefinitionEntity) {    
-      SuspensionStateUtil.setSuspensionState(processDefinitionEntity, SuspensionState.ACTIVE);   
+  public ActivateProcessDefinitionCmd(String processDefinitionId, String processDefinitionKey, 
+          boolean includeProcessInstances, Date executionDate) {
+    super(processDefinitionId, processDefinitionKey, includeProcessInstances, executionDate);
   }
   
+  protected SuspensionState getProcessDefinitionSuspensionState() {
+    return SuspensionState.ACTIVE;
+  }
+  
+  protected String getDelayedExecutionJobHandlerType() {
+    return TimerActivateProcessDefinitionHandler.TYPE;
+  }
 
+  protected AbstractSetProcessInstanceStateCmd getProcessInstanceChangeStateCmd(ProcessInstance processInstance) {
+    return new ActivateProcessInstanceCmd(processInstance.getId());
+  }
 }

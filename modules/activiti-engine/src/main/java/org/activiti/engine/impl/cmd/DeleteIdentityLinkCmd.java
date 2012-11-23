@@ -13,11 +13,7 @@
 
 package org.activiti.engine.impl.cmd;
 
-import java.io.Serializable;
-
 import org.activiti.engine.ActivitiException;
-import org.activiti.engine.impl.context.Context;
-import org.activiti.engine.impl.interceptor.Command;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.task.IdentityLinkType;
@@ -26,13 +22,12 @@ import org.activiti.engine.task.IdentityLinkType;
 /**
  * @author Tom Baeyens
  * @author Falko Menge
+ * @author Joram Barrez
  */
-public class DeleteIdentityLinkCmd implements Command<Object>, Serializable {
+public class DeleteIdentityLinkCmd extends NeedsActiveTaskCmd<Void> {
 
   private static final long serialVersionUID = 1L;
 
-  protected String taskId;
-  
   protected String userId;
   
   protected String groupId;
@@ -40,6 +35,7 @@ public class DeleteIdentityLinkCmd implements Command<Object>, Serializable {
   protected String type;
   
   public DeleteIdentityLinkCmd(String taskId, String userId, String groupId, String type) {
+    super(taskId);
     validateParams(userId, groupId, type, taskId);
     this.taskId = taskId;
     this.userId = userId;
@@ -69,16 +65,8 @@ public class DeleteIdentityLinkCmd implements Command<Object>, Serializable {
     }
   }
   
-  public Void execute(CommandContext commandContext) {
-    TaskEntity task = Context
-      .getCommandContext()
-      .getTaskManager()
-      .findTaskById(taskId);
-    
-    if (task == null) {
-      throw new ActivitiException("Cannot find task with id " + taskId);
-    }
-    
+  protected Void execute(CommandContext commandContext, TaskEntity task) {
+
     if (IdentityLinkType.ASSIGNEE.equals(type)) {
       task.setAssignee(null);
     } else if (IdentityLinkType.OWNER.equals(type)) {

@@ -12,11 +12,7 @@
  */
 package org.activiti.engine.impl.cmd;
 
-import java.io.Serializable;
-
 import org.activiti.engine.ActivitiException;
-import org.activiti.engine.impl.context.Context;
-import org.activiti.engine.impl.interceptor.Command;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.task.IdentityLinkType;
@@ -25,12 +21,10 @@ import org.activiti.engine.task.IdentityLinkType;
 /**
  * @author Joram Barrez
  */
-public class AddIdentityLinkCmd implements Command<Void>, Serializable {
+public class AddIdentityLinkCmd extends NeedsActiveTaskCmd<Void> {
   
   private static final long serialVersionUID = 1L;
 
-  protected String taskId;
-  
   protected String userId;
   
   protected String groupId;
@@ -38,6 +32,7 @@ public class AddIdentityLinkCmd implements Command<Void>, Serializable {
   protected String type;
   
   public AddIdentityLinkCmd(String taskId, String userId, String groupId, String type) {
+    super(taskId);
     validateParams(userId, groupId, type, taskId);
     this.taskId = taskId;
     this.userId = userId;
@@ -67,16 +62,8 @@ public class AddIdentityLinkCmd implements Command<Void>, Serializable {
     }
   }
   
-  public Void execute(CommandContext commandContext) {
-    TaskEntity task = Context
-      .getCommandContext()
-      .getTaskManager()
-      .findTaskById(taskId);
-    
-    if (task == null) {
-      throw new ActivitiException("Cannot find task with id " + taskId);
-    }
-    
+  protected Void execute(CommandContext commandContext, TaskEntity task) {
+
     if (IdentityLinkType.ASSIGNEE.equals(type)) {
       task.setAssignee(userId);
     } else if (IdentityLinkType.OWNER.equals(type)) {

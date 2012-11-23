@@ -81,6 +81,11 @@
     where PARENT_ID_ = #{parameter}
   </select>
   
+  <select id="selectExecutionsByProcessInstanceId" parameterType="org.activiti.engine.impl.db.ListQueryParameterObject" resultMap="executionResultMap">
+    select * from ${prefix}ACT_RU_EXECUTION
+    where PROC_INST_ID_ = #{parameter}
+  </select>
+  
   <select id="selectProcessInstanceIdsByProcessDefinitionId" parameterType="org.activiti.engine.impl.db.ListQueryParameterObject" resultType="string">
     select ID_
     from ${prefix}ACT_RU_EXECUTION
@@ -170,10 +175,10 @@
       </if>
       <if test="suspensionState != null">
       	<if test="suspensionState.stateCode == 1">
-        	and ((RES.SUSPENSION_STATE_ = 1) and (P.SUSPENSION_STATE_ = 1))
+        	and (RES.SUSPENSION_STATE_ = 1)
         </if>
         <if test="suspensionState.stateCode == 2">
-        	and ((RES.SUSPENSION_STATE_ = 2) or (P.SUSPENSION_STATE_ = 2))
+        	and (RES.SUSPENSION_STATE_ = 2)
         </if>
       </if>
       <!-- PLEASE NOTE: If you change anything have a look into the HistoricVariableInstance & HistoricProcessInstance, the same query object is used there! -->

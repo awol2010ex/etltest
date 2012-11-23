@@ -9,6 +9,11 @@ alter table ACT_RE_DEPLOYMENT
     
 alter table ACT_RE_PROCDEF
     add DESCRIPTION_ nvarchar(4000);
+    
+alter table ACT_RU_TASK
+    add SUSPENSION_STATE_ int;
+    
+update ACT_RU_TASK set SUSPENSION_STATE= 1; 
 
 create table ACT_RE_MODEL (
     ID_ nvarchar(64) not null,
@@ -33,5 +38,8 @@ alter table ACT_RE_MODEL
     references ACT_GE_BYTEARRAY (ID_);
 
 delete from ACT_GE_PROPERTY where NAME_ = 'historyLevel';
+
+alter table ACT_RU_JOB
+    add PROC_DEF_ID_ nvarchar(64);
 
 update ACT_GE_PROPERTY set VALUE_ = '5.11' where NAME_ = 'schema.version';

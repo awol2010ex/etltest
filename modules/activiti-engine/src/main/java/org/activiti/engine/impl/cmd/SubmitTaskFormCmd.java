@@ -13,12 +13,9 @@
 
 package org.activiti.engine.impl.cmd;
 
-import java.io.Serializable;
 import java.util.Map;
 
-import org.activiti.engine.ActivitiException;
 import org.activiti.engine.impl.form.TaskFormHandler;
-import org.activiti.engine.impl.interceptor.Command;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 
@@ -27,28 +24,20 @@ import org.activiti.engine.impl.persistence.entity.TaskEntity;
  * @author Tom Baeyens
  * @author Joram Barrez
  */
-public class SubmitTaskFormCmd implements Command<Object>, Serializable {
+public class SubmitTaskFormCmd extends NeedsActiveTaskCmd<Object> {
 
   private static final long serialVersionUID = 1L;
+  
   protected String taskId;
   protected Map<String, String> properties;
   
   public SubmitTaskFormCmd(String taskId, Map<String, String> properties) {
+    super(taskId);
     this.taskId = taskId;
     this.properties = properties;
   }
-
-  public Object execute(CommandContext commandContext) {
-    if(taskId == null) {
-      throw new ActivitiException("taskId is null");
-    }
-    
-    TaskEntity task = commandContext.getTaskManager().findTaskById(taskId);
-
-    if (task == null) {
-      throw new ActivitiException("Cannot find task with id " + taskId);
-    }
-    
+  
+  protected Object execute(CommandContext commandContext, TaskEntity task) {
     commandContext.getHistoryManager()
       .reportFormPropertiesSubmitted(task.getExecution(), properties, taskId);
     
@@ -59,4 +48,10 @@ public class SubmitTaskFormCmd implements Command<Object>, Serializable {
 
     return null;
   }
+  
+  @Override
+  protected String getSuspendedTaskException() {
+    return "Cannot submit a form to a suspended task";
+  }
+  
 }

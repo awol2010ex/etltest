@@ -160,7 +160,7 @@ public class ExplorerApp extends Application implements HttpServletRequestListen
   public void setLocale(Locale locale) {
     super.setLocale(locale);
     if(i18nManager != null) {
-      i18nManager.createResourceBundle();
+      i18nManager.setLocale(locale);
     }
   }
   
@@ -214,6 +214,15 @@ public class ExplorerApp extends Application implements HttpServletRequestListen
         invalidatedSession = true;
       }
     }
+  }
+  
+  // Error handling ---------------------------------------------------------------------------------
+  
+  @Override
+  public void terminalError(com.vaadin.terminal.Terminal.ErrorEvent event) {
+    super.terminalError(event);
+    
+    notificationManager.showErrorNotification(Messages.UNCAUGHT_EXCEPTION, event.getThrowable().getCause().getMessage());
   }
   
   // URL Handling ---------------------------------------------------------------------------------

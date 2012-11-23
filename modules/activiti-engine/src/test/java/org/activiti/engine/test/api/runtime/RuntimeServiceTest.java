@@ -762,7 +762,6 @@ public class RuntimeServiceTest extends PluggableActivitiTestCase {
      fail("exeception expected");
    }catch (ActivitiException e) {
      // this is good
-     assertTrue(e.getMessage().contains("Execution 'nonexistingExecution' has not subscribed to a signal event with name 'alert'"));
    }
   }
  
@@ -771,8 +770,6 @@ public class RuntimeServiceTest extends PluggableActivitiTestCase {
      runtimeService.messageEventReceived("alert", "nonexistingExecution");
      fail("exeception expected");
    }catch (ActivitiException e) {
-     // this is good
-     assertTrue(e.getMessage().contains("Execution with id 'nonexistingExecution' does not have a subscription to a message event with name 'alert'"));
    }
   }
  
@@ -789,7 +786,6 @@ public class RuntimeServiceTest extends PluggableActivitiTestCase {
      fail("exeception expected");
    }catch (ActivitiException e) {
      // this is good
-     assertTrue(e.getMessage().contains("has not subscribed to a signal event with name 'bogusSignal'"));
    }
   }
 
