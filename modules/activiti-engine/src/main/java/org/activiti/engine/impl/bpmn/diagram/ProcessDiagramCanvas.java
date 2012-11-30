@@ -82,7 +82,7 @@ public class ProcessDiagramCanvas {
   protected static Color LABEL_COLOR = new Color(112, 146, 190);
   
   // Fonts
-  protected static Font LABEL_FONT = new Font("Arial", Font.ITALIC, 10);
+  protected static Font LABEL_FONT = new Font("宋体", Font.BOLD, 10);
 
   // Strokes
   protected static Stroke THICK_TASK_BORDER_STROKE = new BasicStroke(3.0f);
@@ -149,7 +149,7 @@ public class ProcessDiagramCanvas {
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g.setPaint(Color.black);
 
-    Font font = new Font("Arial", Font.BOLD, FONT_SIZE);
+    Font font = new Font("宋体", Font.BOLD, FONT_SIZE);
     g.setFont(font);
     this.fontMetrics = g.getFontMetrics();
   }
