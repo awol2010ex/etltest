@@ -23,7 +23,7 @@ import org.activiti.bpmn.model.ScriptTask;
 public class ScriptTextParser extends BaseChildElementParser {
 	
   public String getElementName() {
-    return "script";
+    return ATTRIBUTE_TASK_SCRIPT_TEXT;
   }
   
   public void parseChildElement(XMLStreamReader xtr, BaseElement parentElement) throws Exception {
